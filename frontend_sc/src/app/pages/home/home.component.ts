@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlunoService } from '../../services/aluno.service';
 import { AlunoViewModel } from '../../models/AlunoViewModel';
 import { RouterLink } from '@angular/router';
-
+import { TelefoneService } from '../../services/telefone.service';
 
 /* Angular Material */
 import { MatTableModule } from '@angular/material/table';
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   colums = ['Situacao','Nome', 'CPF', 'Email', 'Telefone', 'Ações', 'Excluir'];
 
 
-  constructor( private alunoService : AlunoService) {}
+  constructor( private alunoService : AlunoService, private telefoneService : TelefoneService) {}
   
   ngOnInit(): void {
     this.alunoService.GetAlunos().subscribe(data =>{
@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
 
       data?.dados?.map((item) => {
         item.dataNascimento = new Date(item.dataNascimento).toLocaleDateString('pt-BR');
+        item.telefone = this.telefoneService.formatarTelefone(item.telefone);
       })
       
       this.alunos = data?.dados ?? [];

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AlunoService } from '../../services/aluno.service';
 import { AlunoViewModel } from '../../models/AlunoViewModel';
+import { TelefoneService } from '../../services/telefone.service';
 
 /* Angular Material */
 import { MatButtonModule } from '@angular/material/button';
@@ -17,14 +18,14 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatCardModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   templateUrl: './detalhes.component.html',
   styleUrl: './detalhes.component.css'
 })
 export class DetalhesComponent implements OnInit {
 
-  constructor(private alunoService : AlunoService, private route : ActivatedRoute, private router : Router) { }
+  constructor(private alunoService : AlunoService, private telefoneService: TelefoneService, private route : ActivatedRoute, private router : Router) { }
 
   aluno?: AlunoViewModel;
   id!: number;
@@ -37,7 +38,7 @@ export class DetalhesComponent implements OnInit {
       const dados = data.dados!;
 
       dados.dataNascimento = new Date(dados.dataNascimento).toLocaleDateString('pt-BR');
-
+      dados.telefone = this.telefoneService.formatarTelefone(dados.telefone);
       this.aluno = data.dados!;
       this.atualizarTextoBotao();
       console.log(data);
@@ -55,4 +56,5 @@ export class DetalhesComponent implements OnInit {
         this.router.navigate(['']);
       });
   }
+
 }

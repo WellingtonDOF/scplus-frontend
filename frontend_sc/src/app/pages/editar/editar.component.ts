@@ -34,7 +34,6 @@ export class EditarComponent implements OnInit{
     this.alunoService.EditarAluno(this.aluno.id, aluno).subscribe((data) => {
       console.log(data);
       this.router.navigate(['']);
-
     });
   }
 
