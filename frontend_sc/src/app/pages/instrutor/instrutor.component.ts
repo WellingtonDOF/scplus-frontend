@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlunoService } from '../../services/aluno.service';
-import { AlunoViewModel } from '../../models/AlunoViewModel';
+import { InstrutorService } from '../../services/instrutor.service';
+import { InstrutorViewModel } from '../../models/InstrutorViewModel';
 import { RouterLink } from '@angular/router';
 import { TelefoneService } from '../../services/telefone.service';
 
@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-instrutor',
   imports: 
   [
     RouterLink, 
@@ -20,29 +20,30 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatInputModule
   ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  templateUrl: './instrutor.component.html',
+  styleUrl: './instrutor.component.css'
 })
-export class HomeComponent implements OnInit {
+export class InstrutorComponent implements OnInit {
 
-  alunos: AlunoViewModel[] = [];
-  alunosGeral: AlunoViewModel[] = [];
+  instrutores: InstrutorViewModel[] = [];
+  instrutoresGeral: InstrutorViewModel[] = [];
   colums = ['Situacao','Nome', 'CPF', 'Email', 'Telefone', 'Ações', 'Excluir'];
 
-  constructor( private alunoService : AlunoService, private telefoneService : TelefoneService) {}
+
+  constructor( private instrutorService : InstrutorService, private telefoneService : TelefoneService) {}
   
   ngOnInit(): void {
-    this.alunoService.GetAlunos().subscribe(data =>{
+    this.instrutorService.GetInstrutores().subscribe(data =>{
       console.log(data.dados);
-      const dados = data.dados; // Acessa a propriedade 'dados' do objeto retornado
+      const dados = data.dados; 
 
       data?.dados?.map((item) => {
         item.dataNascimento = new Date(item.dataNascimento).toLocaleDateString('pt-BR');
         item.telefone = this.telefoneService.formatarTelefone(item.telefone);
       })
       
-      this.alunos = data?.dados ?? [];
-      this.alunosGeral = data?.dados ?? []; 
+      this.instrutores = data?.dados ?? [];
+      this.instrutoresGeral = data?.dados ?? []; 
     });  
   }
 
@@ -50,15 +51,15 @@ export class HomeComponent implements OnInit {
     const value = (event.target as HTMLInputElement).value.toLowerCase();
   
     if (!value) {
-      this.alunos = [...this.alunosGeral]; // ou this.alunosGeral.slice()
+      this.instrutores = [...this.instrutoresGeral]; // ou this.alunosGeral.slice()
       return;
     }
   
     const valueNumerico = value.replace(/\D/g, '');
   
-    this.alunos = this.alunosGeral.filter(aluno => {
-      const cpfSemPontuacao = aluno.cpf.replace(/\D/g, '').toLowerCase();
-      const nomeCompletoLower = aluno.nomeCompleto.toLowerCase();
+    this.instrutores = this.instrutoresGeral.filter(instrutor => {
+      const cpfSemPontuacao = instrutor.cpf.replace(/\D/g, '').toLowerCase();
+      const nomeCompletoLower = instrutor.nomeCompleto.toLowerCase();
   
       return (
         (value && nomeCompletoLower.includes(value)) ||
