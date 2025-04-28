@@ -1,14 +1,13 @@
-export interface AlunoViewModel{
+export interface InstrutorViewModel{
     id: number;
     nomeCompleto: string; 
     cpf: string;         
     endereco: string;     
     telefone: string;    
     email: string;        
-    dataNascimento: string; // ou date
+    dataNascimento: string; 
     tipoUsuario: string;  
     status: string;
     categoriaCnh: string;
-    statusPagamento : string;
-    statusCurso : string;
+    dataAdmissao : string;
 }

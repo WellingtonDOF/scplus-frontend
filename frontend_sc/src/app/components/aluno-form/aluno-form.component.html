@@ -1,97 +1,3 @@
-<!--
-<mat-card appearance="outlined">
-    <h1>{{btnTitulo}}</h1>
-    <form [formGroup]="alunoForm" (ngSubmit)="submit()" #formDit="ngForm" (submit)="$event.preventDefault()">
-
-        @if(dadosAluno === null){
-            <input type="hidden" formControlName="id">
-        }
-
-        <div class="input_box">
-            <mat-form-field>
-                <mat-label>Nome Completo:</mat-label>
-                <input matInput type="text" formControlName="nomeCompleto" placeholder="Insira o nome!" required>
-            </mat-form-field>
-        </div>
-
-        @if (dadosAluno === null) {
-            <div class="input_box">
-                <mat-form-field>
-                    <mat-label>CPF:</mat-label>
-                    <input matInput type="text" formControlName="cpf" placeholder="Insira o CPF!" required>
-                </mat-form-field>
-            </div>
-        }
-
-        <div class="input_box">
-            <mat-form-field>
-                <mat-label>Endereço:</mat-label>
-                <input matInput type="text" formControlName="endereco" placeholder="Insira o endereço!" required>
-            </mat-form-field>
-        </div>
-
-        <div class="input_box">
-            <mat-form-field>
-                <mat-label>Telefone:</mat-label>
-                <input matInput type="text" formControlName="telefone" placeholder="Insira o telefone!" required>
-            </mat-form-field>
-        </div>
-
-        <div class="input_box">
-            <mat-form-field>
-                <mat-label>Email:</mat-label>
-                <input matInput type="email" formControlName="email" placeholder="Insira o email!" required>
-            </mat-form-field>
-        </div>
-
-        @if (dadosAluno === null) {
-            <div class="input_box">
-                <mat-form-field>
-                    <mat-label>Data de Nascimento:</mat-label>
-                    <input matInput type="date" formControlName="dataNascimento" placeholder="Insira a data de nascimento!" required>
-                </mat-form-field>
-            </div>
-        }
-
-        <div class="input_box">
-            <mat-form-field>
-                <mat-label>Senha:</mat-label>
-                <input matInput type="password" formControlName="senha" placeholder="Insira a senha!" required>
-            </mat-form-field>
-        </div>
-
-        <div class="input_box">
-            <mat-form-field>
-                <mat-label>Categoria CNH: </mat-label>
-                <mat-select id="categoriaCnhDesejada" formControlName="categoriaCnhDesejada" required>
-                    <mat-option value="A">A</mat-option>
-                    <mat-option value="B">B</mat-option>
-                    <mat-option value="AB">AB</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-
-        @if (dadosAluno === null) {
-            <div class="input_box">
-                <mat-form-field>
-                    <mat-label>Tipo usuário:</mat-label>
-                    <mat-select id="tipoUsuario" formControlName="tipoUsuario" required>
-                        <mat-option value="Aluno">Aluno</mat-option>
-                        <mat-option value="Instrutor">Instrutor</mat-option>
-                        <mat-option value="Admin">Admin</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        }
-
-        <div class="btn-box">
-            <button type="submit" [disabled]="!alunoForm.valid" mat-raised-button class="custom-button">{{btnAcao}}</button>
-            <button routerLink="" mat-raised-button>Voltar</button>
-        </div>
-    </form>
-</mat-card>
--->
-
 <mat-card appearance="outlined">
     <h1>{{btnTitulo}}</h1>
     <form [formGroup]="alunoForm" (ngSubmit)="submit()" #formDit="ngForm" (submit)="$event.preventDefault()">
@@ -121,6 +27,9 @@
                     }
                     @if (alunoForm.get('cpf')?.hasError('invalidCpf')) {
                       <mat-error>CPF inválido</mat-error>
+                    }
+                    @if (alunoForm.get('cpf')?.hasError('cpfExists')) {
+                      <mat-error>CPF já cadastrado</mat-error>
                     }
                 </mat-form-field>
             </div>
@@ -176,6 +85,22 @@
             </div>
         }
 
+        @if(tipoCadastro==='instrutor' && dadosAluno === null){
+            <div class="input_box">
+                <mat-form-field>
+                    <mat-label>Data de Admissão</mat-label>
+                    <input matInput type="date" formControlName="dataAdmissao" required>
+                    
+                    @if (alunoForm.get('dataAdmissao')?.hasError('dataAntiga')) {
+                    <mat-error>A empresa foi fundada em 30/08/1988.</mat-error>
+                    }
+                    @if (alunoForm.get('dataAdmissao')?.hasError('dataFutura')) {
+                    <mat-error>A data não pode ser no futuro!</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+        }
+
         @if(dadosAluno===null){
             <div class="input_box">
                 <mat-form-field>
@@ -201,27 +126,39 @@
         <div class="input_box">
             <mat-form-field>
                 <mat-label>Categoria CNH: </mat-label>
-                <mat-select id="categoriaCnhDesejada" formControlName="categoriaCnhDesejada" required>
-                    <mat-option value="A">A</mat-option>
-                    <mat-option value="B">B</mat-option>
-                    <mat-option value="AB">AB</mat-option>
-                </mat-select>
+                    <mat-select id="categoriaCnh" formControlName="categoriaCnh" required>
+                        <mat-option value="A">A</mat-option>
+                        <mat-option value="B">B</mat-option>
+                        <mat-option value="AB">AB</mat-option>
+                    </mat-select>           
             </mat-form-field>
-        </div>
+        </div>       
 
         @if (dadosAluno === null) {
-            <div class="input_box">
-                <mat-form-field>
-                    <mat-label>Tipo usuário:</mat-label>
-                    <mat-select id="tipoUsuario" formControlName="tipoUsuario" required>
-                        <mat-option value="Aluno">Aluno</mat-option>
-                        <mat-option value="Instrutor">Instrutor</mat-option>
-                        <mat-option value="Admin">Admin</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        }
 
+            @if(tipoCadastro==='instrutor'){
+                <div class="input_box">
+                    <mat-form-field>
+                        <mat-label>Tipo usuário:</mat-label>
+                        <mat-select id="tipoUsuario" formControlName="tipoUsuario" required>
+                            <mat-option value="Instrutor">Instrutor</mat-option>
+                            <mat-option value="Admin">Admin</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            }
+            @else {
+                <div class="input_box">
+                    <mat-form-field>
+                        <mat-label>Tipo usuário:</mat-label>
+                        <mat-select id="tipoUsuario" formControlName="tipoUsuario" required>
+                            <mat-option value="Aluno">Aluno</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            }
+        }
+    
         <div class="btn-box">
             <button type="submit" [disabled]="!alunoForm.valid" mat-raised-button class="custom-button">{{btnAcao}}</button>
             <button routerLink="" mat-raised-button>Voltar</button>

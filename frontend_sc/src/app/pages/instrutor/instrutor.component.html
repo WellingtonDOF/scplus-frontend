@@ -1,7 +1,7 @@
 <mat-card>
 
-    <div class="aluno-box">
-        <button [routerLink]="['/cadastro']" [queryParams]="{tipo: 'aluno'}"  mat-raised-button class="custom-button">Cadastrar novo Aluno</button>
+    <div class="instrutor-box">
+        <button [routerLink]="['/cadastro']" [queryParams]="{tipo: 'instrutor'}"  mat-raised-button class="custom-button">Cadastrar novo Instrutor</button>
         <div class="input_box">
             <mat-form-field>
                 <mat-label for="">Procurar:</mat-label>
@@ -10,16 +10,12 @@
         </div>
     </div>
 
-    <table mat-table [dataSource]="alunos" class="mat-elevation-z8">
+    <table mat-table [dataSource]="instrutores" class="mat-elevation-z8">
 
-        <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
-    
-        <!-- Position Column -->
         <ng-container matColumnDef="Situacao">
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let alunos">
-            @if(alunos.status == "Ativo"){
+        <td mat-cell *matCellDef="let instrutores">
+            @if(instrutores.status == "Ativo"){
                 <div>
                     <img src="images/active.png" alt="bolinha verde com simbolo check" style="height: 15px; width: 15px;">
                 </div>
@@ -34,40 +30,40 @@
         <!-- Name Column -->
         <ng-container matColumnDef="Nome">
         <th mat-header-cell *matHeaderCellDef>Nome</th>
-        <td mat-cell *matCellDef="let alunos"> {{alunos.nomeCompleto}} </td>
+        <td mat-cell *matCellDef="let instrutores"> {{instrutores.nomeCompleto}} </td>
         </ng-container>
     
         <!-- Weight Column -->
         <ng-container matColumnDef="CPF">
         <th mat-header-cell *matHeaderCellDef>CPF</th>
-        <td mat-cell *matCellDef="let alunos"> {{alunos.cpf}} </td>
+        <td mat-cell *matCellDef="let instrutores"> {{instrutores.cpf}} </td>
         </ng-container>
     
         <!-- Symbol Column -->
         <ng-container matColumnDef="Email">
         <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let alunos"> {{alunos.email}} </td>
+        <td mat-cell *matCellDef="let instrutores"> {{instrutores.email}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="Telefone">
             <th mat-header-cell *matHeaderCellDef>Telefone</th>
-            <td mat-cell *matCellDef="let alunos"> {{alunos.telefone}} </td>
+            <td mat-cell *matCellDef="let instrutores"> {{instrutores.telefone}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="Ações">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let alunos"> 
-                <button routerLink="/editar/{{alunos.id}}" [queryParams]="{ tipo: 'aluno' }" mat-raised-button class="custom-buttonEdit">Editar</button>
-                <button routerLink="/detalhes/{{alunos.id}}" [queryParams]="{ tipo: 'aluno' }" mat-raised-button>Detalhes</button> 
+            <td mat-cell *matCellDef="let instrutores"> 
+                <button routerLink="/editar/{{instrutores.id}}" [queryParams]="{ tipo: 'instrutor' }" mat-raised-button class="custom-buttonEdit">Editar</button>
+                <button routerLink="/detalhes/{{instrutores.id}}" [queryParams]="{ tipo: 'instrutor' }" mat-raised-button>Detalhes</button> 
             </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="Excluir">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let alunos">
+            <td mat-cell *matCellDef="let instrutores">
                 <button mat-raised-button color="warn">Excluir</button>
             </td>
         </ng-container>
@@ -76,6 +72,7 @@
         <tr mat-header-row *matHeaderRowDef="colums"></tr>
         <tr mat-row *matRowDef="let row; columns: colums;"></tr>
     </table>
+
     <!--
     <table class="table">
         <thead>
@@ -91,10 +88,10 @@
             </tr>
         </thead>
         <tbody>
-            @for(alunos of alunos; track alunos){
+            @for(instrutores of instrutores; track instrutores){
                 <tr>
                     <td>
-                        @if(alunos.status == "Ativo"){
+                        @if(instrutores.status == "Ativo"){
                             <div>
                                 <img src="images/active.png" alt="bolinha verde com simbolo check" style="height: 15px; width: 15px;">
                             </div>
@@ -104,13 +101,13 @@
                             </div>
                         } 
                     </td>
-                    <td>{{alunos.nomeCompleto}}</td>
-                    <td>{{alunos.cpf}}</td>
-                    <td>{{alunos.email}}</td>
-                    <td>{{alunos.telefone}}</td>
+                    <td>{{instrutores.nomeCompleto}}</td>
+                    <td>{{instrutores.cpf}}</td>
+                    <td>{{instrutores.email}}</td>
+                    <td>{{instrutores.telefone}}</td>
                     <td>
-                        <button routerLink="/editar/{{alunos.id}}">Editar</button>
-                        <button routerLink="/detalhes/{{alunos.id}}">Detalhes</button>              
+                        <button routerLink="/editar/{{instrutores.id}}">Editar</button>
+                        <button routerLink="/detalhes/{{instrutores.id}}">Detalhes</button>              
                     </td>
                     <td>
                         <button>Excluir</button>

@@ -17,7 +17,7 @@ import { AlunoUpdateDTO } from '../dto/aluno/AlunoUpdateDTO';
 export class AlunoService {
 
   private apiUrl = `${environment.ApiUrl}/aluno`; // URL da API
- 
+  private urlVerificaCpf = `${environment.ApiUrl}/pessoa`; // URL da API para verificar CPF
   constructor(private http: HttpClient) { }
 
 
@@ -41,7 +41,7 @@ export class AlunoService {
         dataNascimento: alunoResponse.dataNascimento, 
         tipoUsuario: alunoResponse.tipoUsuario,
         status: alunoResponse.status,
-        categoriaCnhDesejada: alunoResponse.categoriaCnhDesejada,
+        categoriaCnh: alunoResponse.categoriaCnh,
         statusPagamento: alunoResponse.statusPagamento,
         statusCurso: alunoResponse.statusCurso
       };
@@ -64,6 +64,23 @@ export class AlunoService {
       );
     }
 
+    VerificarCpfExistente(cpf: string): Observable<Response<boolean>> {
+      return this.http.get<Response<boolean>>(`${this.urlVerificaCpf}/verificar-cpf/${cpf}`).pipe(
+        map(response => {
+          if(response.sucesso) {
+            const existe = response.dados ?? false;
+            return new ResponseSucesso<boolean>(existe, response.mensagem);
+          } else {
+            return new ResponseErro<boolean>(false, response.mensagem);
+          }
+        }),
+        catchError(error => {
+          console.error('Erro na verificação de CPF:', error);
+          return of(new ResponseErro<boolean>(false, 'Erro ao verificar CPF.'));
+        })
+      );
+    }
+    
     GetAlunos() : Observable<Response<AlunoViewModel[]>> {
       return this.http.get<Response<AlunoResponseDTO[]>>(this.apiUrl).pipe(
         map(response =>{

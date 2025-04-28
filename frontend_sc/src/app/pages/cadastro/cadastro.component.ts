@@ -3,6 +3,8 @@ import { AlunoFormComponent } from '../../components/aluno-form/aluno-form.compo
 import { AlunoCreateDTO } from '../../dto/aluno/AlunoCreateDTO';
 import { AlunoService } from '../../services/aluno.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { InstrutorCreateDTO } from '../../dto/instrutor/InstrutorCreateDTO';
+import { InstrutorService } from '../../services/instrutor.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -17,7 +19,7 @@ export class CadastroComponent implements OnInit{
   btnTitulo = "Cadastrar Aluno";
   tipoCadastro: 'aluno' | 'instrutor' = 'aluno';
 
-  constructor(private alunoService: AlunoService, private router: Router, private route : ActivatedRoute) {
+  constructor(private alunoService: AlunoService, private instrutorService: InstrutorService, private router: Router, private route : ActivatedRoute) {
   }
 
   ngOnInit(): void {  
@@ -28,6 +30,16 @@ export class CadastroComponent implements OnInit{
     console.log(this.tipoCadastro)
   }
 
+  handleFormData(formData: AlunoCreateDTO | InstrutorCreateDTO) {
+    if (this.tipoCadastro === 'aluno' && 'categoriaCnh' in formData) {
+      this.createAluno(formData);
+    } else if (this.tipoCadastro === 'instrutor' && 'categoriaCnh' in formData && 'dataAdmissao' in formData) {
+      this.createInstrutor(formData);
+    } else {
+      console.error('Tipo de formulário ou dados inválidos para o tipo de cadastro.');
+    }
+  }
+
   createAluno(aluno : AlunoCreateDTO){
     this.alunoService.CreateAluno(aluno).subscribe((data)=>{
       this.router.navigate(['/']);
@@ -35,5 +47,10 @@ export class CadastroComponent implements OnInit{
     });
   }
 
-  
+  createInstrutor(instrutor : InstrutorCreateDTO){
+    this.instrutorService.CreateInstrutor(instrutor).subscribe((data)=>{
+      this.router.navigate(['instrutor']);
+      console.log(data);
+    });
+  }
 }

@@ -1,6 +1,10 @@
 <div>
     <!-- Se não colocar esse IF ele recarrega a pagina antes de buscar aluno no service, e aluno ainda está vazio -->
-    @if(aluno){
-        <app-aluno-form [btnAcao]="btnAcao" [btnTitulo]="btnTitulo" [dadosAluno]="aluno" (onSubmitUpdate)="editarAluno($event)"></app-aluno-form>
+    @if(aluno && tipoCadastro=== 'aluno') {
+        <app-aluno-form [btnAcao]="btnAcao" [btnTitulo]="btnTitulo" [dadosAluno]="aluno"  [tipoCadastro]="tipoCadastro" (onSubmitUpdate)="handleFormData($event)"></app-aluno-form>
+    }
+
+    @if(instrutor && tipoCadastro=== 'instrutor') {
+        <app-aluno-form [btnAcao]="btnAcao" [btnTitulo]="btnTitulo" [dadosAluno]="instrutor"  [tipoCadastro]="tipoCadastro" (onSubmitUpdate)="handleFormData($event)"></app-aluno-form>
     }
 </div>
