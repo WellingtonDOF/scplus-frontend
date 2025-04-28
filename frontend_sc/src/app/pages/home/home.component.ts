@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
   alunosGeral: AlunoViewModel[] = [];
   colums = ['Situacao','Nome', 'CPF', 'Email', 'Telefone', 'Ações', 'Excluir'];
 
-
   constructor( private alunoService : AlunoService, private telefoneService : TelefoneService) {}
   
   ngOnInit(): void {

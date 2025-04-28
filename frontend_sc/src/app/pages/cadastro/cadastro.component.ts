@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { InstrutorCreateDTO } from '../../dto/instrutor/InstrutorCreateDTO';
 import { InstrutorService } from '../../services/instrutor.service';
 
+
 @Component({
   selector: 'app-cadastro',
   imports: [AlunoFormComponent], 

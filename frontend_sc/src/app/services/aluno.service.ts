@@ -18,8 +18,8 @@ export class AlunoService {
 
   private apiUrl = `${environment.ApiUrl}/aluno`; // URL da API
   private urlVerificaCpf = `${environment.ApiUrl}/pessoa`; // URL da API para verificar CPF
-  constructor(private http: HttpClient) { }
 
+  constructor(private http: HttpClient) { }
 
   private formatarCPF(cpf: string): string {
     if (!cpf) {

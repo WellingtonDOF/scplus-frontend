@@ -8,6 +8,7 @@ import { InstrutorViewModel } from '../../models/InstrutorViewModel';
 import { InstrutorService } from '../../services/instrutor.service';
 import { InstrutorUpdateDTO } from '../../dto/instrutor/InstrutorUpdateDTO';
 
+
 @Component({
   selector: 'app-editar',
   imports: [AlunoFormComponent],

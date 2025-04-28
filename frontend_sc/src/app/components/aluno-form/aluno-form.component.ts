@@ -12,7 +12,6 @@ import { Observable, of } from 'rxjs';
 import { AlunoService } from '../../services/aluno.service';
 import { InstrutorCreateDTO } from '../../dto/instrutor/InstrutorCreateDTO';
 
-
 /* Angular Material */
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -153,7 +152,6 @@ export class AlunoFormComponent implements OnInit {
 
     // Cria o FormGroup com todos os controles
     this.alunoForm = new FormGroup(formControls);
-
 
     this.route.params.subscribe(params => {
       this.id = +params['id'];

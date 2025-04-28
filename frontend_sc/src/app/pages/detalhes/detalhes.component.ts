@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { InstrutorService } from '../../services/instrutor.service';
 import { InstrutorViewModel } from '../../models/InstrutorViewModel';
 
+
 @Component({
   selector: 'app-detalhes',
   imports: 
@@ -38,7 +39,7 @@ export class DetalhesComponent implements OnInit {
 
   @Input() btnAcao!: string
   @Input() btnTitulo!: string
-
+  
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
