@@ -29,7 +29,6 @@ export class InstrutorComponent implements OnInit {
   instrutoresGeral: InstrutorViewModel[] = [];
   colums = ['Situacao','Nome', 'CPF', 'Email', 'Telefone', 'Ações', 'Excluir'];
 
-
   constructor( private instrutorService : InstrutorService, private telefoneService : TelefoneService) {}
   
   ngOnInit(): void {

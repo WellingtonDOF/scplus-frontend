@@ -3,14 +3,15 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AlunoService } from '../../services/aluno.service';
 import { AlunoViewModel } from '../../models/AlunoViewModel';
 import { TelefoneService } from '../../services/telefone.service';
+import { InstrutorService } from '../../services/instrutor.service';
+import { InstrutorViewModel } from '../../models/InstrutorViewModel';
 
 /* Angular Material */
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { InstrutorService } from '../../services/instrutor.service';
-import { InstrutorViewModel } from '../../models/InstrutorViewModel';
+
 
 
 @Component({
@@ -51,19 +52,21 @@ export class DetalhesComponent implements OnInit {
 
       this.instrutorService.GetInstrutor(this.id).subscribe((data) =>{
         const dados = data.dados!;
+        if(dados!== null) {
         dados.dataNascimento = new Date(dados.dataNascimento).toLocaleDateString('pt-BR');
         dados.dataAdmissao = new Date(dados.dataAdmissao).toLocaleDateString('pt-BR');
         dados.telefone = this.telefoneService.formatarTelefone(dados.telefone);
         this.usuarioDetalhes = dados;
-        this.atualizarTextoBotao();
+        this.atualizarTextoBotao();}
       })
     }else{
       this.alunoService.GetAluno(this.id).subscribe((data) =>{
         const dados = data.dados!;
+        if(dados!== null) {
         dados.dataNascimento = new Date(dados.dataNascimento).toLocaleDateString('pt-BR');
         dados.telefone = this.telefoneService.formatarTelefone(dados.telefone);
         this.usuarioDetalhes = dados;
-        this.atualizarTextoBotao();
+        this.atualizarTextoBotao();}
       })
     }
   }
