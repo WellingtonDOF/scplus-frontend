@@ -11,14 +11,14 @@ import { catchError, debounceTime, distinctUntilChanged, map } from 'rxjs/operat
 import { Observable, of } from 'rxjs';
 import { AlunoService } from '../../services/aluno.service';
 import { InstrutorCreateDTO } from '../../dto/instrutor/InstrutorCreateDTO';
+import { InstrutorViewModel } from '../../models/InstrutorViewModel';
+import { InstrutorUpdateDTO } from '../../dto/instrutor/InstrutorUpdateDTO';
 
 /* Angular Material */
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { InstrutorViewModel } from '../../models/InstrutorViewModel';
-import { InstrutorUpdateDTO } from '../../dto/instrutor/InstrutorUpdateDTO';
 
 
 @Component({

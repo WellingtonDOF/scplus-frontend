@@ -7,10 +7,9 @@
     --mdc-protected-button-container-color: #9489f5; /* Cor de fundo */
     --mdc-protected-button-label-text-color: #ffffff;
     margin: 0px 8px 0px 0px;
-
 }
 
-.aluno-box{
+.aula-box{
     width: 100%;
     gap: 15px;
     flex-direction: column;

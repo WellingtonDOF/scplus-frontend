@@ -1,0 +1,34 @@
+<mat-card appearance="outlined">
+    <h1>{{btnTitulo}}</h1>
+    <form [formGroup]="aulaForm" (ngSubmit)="submit()" #formDit="ngForm" (submit)="$event.preventDefault()">
+
+        <input type="hidden" formControlName="id">
+        
+        <div class="input_box">
+            <mat-form-field>
+                <mat-label>Tipo da Aula: </mat-label>
+                    <mat-select id="tipoAula" formControlName="tipoAula" required>
+                        <mat-option value="0">Simulado</mat-option>
+                        <mat-option value="1">Prática</mat-option>
+                        <mat-option value="2">Teórica</mat-option>
+                        <mat-option value="3">Prova</mat-option>
+                    </mat-select>           
+            </mat-form-field>
+        </div>       
+
+        <div class="input_box">
+            <mat-form-field>
+                <mat-label>Descrição:</mat-label>
+                <textarea matInput type="text" formControlName="descricao" rows="2" cols="25" placeholder="Insira a descrição!" required></textarea>
+                @if (aulaForm.get('descricao')?.invalid && aulaForm.get('descricao')?.touched) {
+                  <mat-error>Descrição deve ter entre 5 e 150 caracteres</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        
+        <div class="btn-box">
+            <button type="submit" [disabled]="!aulaForm.valid" mat-raised-button class="custom-button">{{btnAcao}}</button>
+            <button routerLink="/aula" mat-raised-button>Voltar</button>
+        </div>        
+    </form>
+</mat-card>
