@@ -38,7 +38,9 @@ export class MatriculaService {
         dataFim: matriculaResponse.dataFim,
         categoriaPlano: matriculaResponse.categoriaPlano, 
         statusMatricula: matriculaResponse.statusMatricula,
-        alunoCpf: this.formatarCPF(matriculaResponse.alunoCpf)
+        alunoCpf: this.formatarCPF(matriculaResponse.alunoCpf),
+        alunoNome: matriculaResponse.alunoNome,
+        alunoTelefone: matriculaResponse.alunoTelefone
       };
     }
 

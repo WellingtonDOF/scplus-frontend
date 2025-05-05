@@ -104,9 +104,19 @@
             <div class="input_box">
                 <mat-form-field>
                     <mat-label>Senha:</mat-label>
-                    <input matInput type="password" formControlName="senha" placeholder="Insira a senha!" required>
+                    <input matInput 
+                           [type]="hideSenha ? 'password' : 'text'" 
+                           formControlName="senha" 
+                           placeholder="Insira a senha!" 
+                           [required]="dadosAluno === null">
+                    <button mat-icon-button 
+                            matSuffix 
+                            (click)="toggleSenha($event)"
+                            [attr.aria-label]="hideSenha ? 'Mostrar senha' : 'Ocultar senha'">
+                        <mat-icon>{{hideSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
                     @if (alunoForm.get('senha')?.hasError('minlength')) {
-                    <mat-error>Senha deve ter pelo menos 6 caracteres</mat-error>
+                        <mat-error>Senha deve ter pelo menos 6 caracteres</mat-error>
                     }
                 </mat-form-field>
             </div>
@@ -114,14 +124,39 @@
             <div class="input_box">
                 <mat-form-field>
                     <mat-label>Senha:</mat-label>
-                    <input matInput type="password" formControlName="senha" placeholder="Insira a senha!">
+                    <input matInput 
+                           [type]="hideSenha ? 'password' : 'text'" 
+                           formControlName="senha" 
+                           placeholder="Insira a senha!">
+                    <button mat-icon-button 
+                           matSuffix 
+                           (click)="toggleSenha($event)"
+                           [attr.aria-label]="hideSenha ? 'Mostrar senha' : 'Ocultar senha'">
+                       <mat-icon>{{hideSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
+                   </button>
                     @if (alunoForm.get('senha')?.hasError('minlength')) {
-                    <mat-error>Senha deve ter pelo menos 6 caracteres</mat-error>
+                        <mat-error>Senha deve ter pelo menos 6 caracteres</mat-error>
                     }
                 </mat-form-field>
             </div>
         }
         
+        <div class="input_box">
+            <mat-form-field>
+              <mat-label>Confirme a Senha:</mat-label>
+              <input matInput
+                     [type]="hideSenha ? 'password' : 'text'"
+                     formControlName="confirmaSenha"
+                     placeholder="Confirme a senha!">
+          
+              @if (alunoForm.hasError('senhasDiferentes') && alunoForm.get('confirmaSenha')?.touched) {
+                <mat-error>As senhas não coincidem.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          
+          
+          
         <div class="input_box">
             <mat-form-field>
                 <mat-label>Categoria CNH: </mat-label>

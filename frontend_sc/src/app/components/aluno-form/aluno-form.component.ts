@@ -19,7 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-aluno-form',
@@ -29,8 +29,9 @@ import { MatSelectModule } from '@angular/material/select';
     RouterLink,
     MatButtonModule,
     MatCardModule,
-    MatInputModule,
+    MatInputModule, 
     MatSelectModule,
+    MatIconModule, 
     NgxMaskDirective,
   ],
   templateUrl: './aluno-form.component.html',
@@ -54,6 +55,7 @@ export class AlunoFormComponent implements OnInit {
 
   alunoForm!: FormGroup;
   id: number | null = null;
+  hideSenha: boolean = true;
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private alunoService: AlunoService) { }
 
@@ -74,6 +76,7 @@ export class AlunoFormComponent implements OnInit {
         telefoneFormatado = this.dadosAluno.telefone; // Se não corresponder, usa o valor original
       }
       }
+
       
     // 1. Campos COMUNS a todos
     const formControls: any = {
@@ -150,9 +153,14 @@ export class AlunoFormComponent implements OnInit {
       );
     }
 
+    formControls.confirmaSenha = new FormControl('', Validators.required);
     // Cria o FormGroup com todos os controles
     this.alunoForm = new FormGroup(formControls);
 
+    this.alunoForm = new FormGroup(formControls, {
+      validators: this.matchPasswords,
+    });
+    
     this.route.params.subscribe(params => {
       this.id = +params['id'];
       if (this.id && this.dadosAluno) {
@@ -179,7 +187,23 @@ export class AlunoFormComponent implements OnInit {
       }
     });
   }
+
+  matchPasswords(group: AbstractControl): ValidationErrors | null {
+    const senha = group.get('senha')?.value;
+    const confirmaSenha = group.get('confirmaSenha')?.value;
   
+    if (!confirmaSenha) return null; // evita erro antes de digitar
+  
+    return senha === confirmaSenha ? null : { senhasDiferentes: true };
+  }
+  
+  
+  toggleSenha(event: Event): void {
+    event.preventDefault(); // Garante que não cause submit ou outros efeitos
+    event.stopPropagation(); // Evita que a ação dispare nos elementos pai
+    this.hideSenha = !this.hideSenha;
+  }
+
   validateCpfExists(control: AbstractControl): Observable<ValidationErrors | null> {
     if (!control.value || this.dadosAluno) {
       return of(null);
@@ -273,7 +297,8 @@ export class AlunoFormComponent implements OnInit {
       const telefoneApenasNumeros = telefoneComMascara ? telefoneComMascara.replace(/\D/g, '') : '';
 
       const formData = { ...this.alunoForm.value, telefone: telefoneApenasNumeros }
- 
+      delete formData.confirmaSenha;
+      
       if (this.dadosAluno) 
       {
         if (this.tipoCadastro === 'aluno') {
