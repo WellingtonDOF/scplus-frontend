@@ -7,4 +7,6 @@ export interface MatriculaResponseDTO {
     categoriaPlano: string;        
     statusMatricula: string;
     alunoCpf: string
+    alunoNome: string
+    alunoTelefone: string
 }

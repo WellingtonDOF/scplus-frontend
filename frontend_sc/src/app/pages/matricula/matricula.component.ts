@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { TelefoneService } from '../../services/telefone.service';
 
 /* Angular Material */
 import { MatTableModule } from '@angular/material/table';
@@ -27,9 +28,9 @@ export class MatriculaComponent implements OnInit {
 
   matriculas: MatriculaViewModel[] = [];
   matriculasGeral: MatriculaViewModel[] = [];
-  colums = ['Situacao', 'CPF', 'Plano', 'Quantidade', 'Ações', 'Excluir'];
+  colums = ['Situacao', 'Nome', 'CPF', 'Telefone', 'Plano', 'Quantidade', 'Ações', 'Excluir'];
 
-  constructor( private matriculaService : MatriculaService, private navigationService : NavigationService, private router: Router) {}
+  constructor( private matriculaService : MatriculaService, private navigationService : NavigationService, private telefoneService: TelefoneService, private router: Router) {}
   
   ngOnInit(): void {
     this.matriculaService.GetMatriculas().subscribe(data =>{
@@ -37,6 +38,8 @@ export class MatriculaComponent implements OnInit {
       data?.dados?.map((item) => {
         item.dataInicio = new Date(item.dataInicio).toLocaleDateString('pt-BR');
         item.dataFim = new Date(item.dataFim).toLocaleDateString('pt-BR');
+        item.alunoTelefone = this.telefoneService.formatarTelefone(item.alunoTelefone!);
+
       })
       
       console.log(data)
