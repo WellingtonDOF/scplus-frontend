@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { NavigationService } from '../../services/navigation.service';
 
 
 
@@ -29,11 +30,17 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class DetalhesComponent implements OnInit {
 
-  constructor(private alunoService : AlunoService, private instrutorService : InstrutorService, private telefoneService: TelefoneService, private route : ActivatedRoute, private router : Router) { }
+  constructor(private alunoService : AlunoService, 
+              private instrutorService : InstrutorService, 
+              private telefoneService: TelefoneService, 
+              private route : ActivatedRoute, 
+              private router : Router,
+              private navigationService : NavigationService) { }
 
   aluno?: AlunoViewModel;
   instrutor?: InstrutorViewModel;
   usuarioDetalhes: AlunoViewModel | InstrutorViewModel | null = null;
+  exibirVoltarMatricula: boolean = false;
 
   id!: number;
   tipoCadastro: 'aluno' | 'instrutor' = 'aluno';
@@ -69,6 +76,18 @@ export class DetalhesComponent implements OnInit {
         this.atualizarTextoBotao();}
       })
     }
+
+    const storedPreviousPage = sessionStorage.getItem('previousPage');
+    if (storedPreviousPage === 'matriculas') {
+      this.exibirVoltarMatricula = true;
+    } else {
+      this.exibirVoltarMatricula = false;
+    }  
+  }
+
+  voltarParaMatriculas() {
+    sessionStorage.removeItem('previousPage');
+    this.router.navigate(['/matricula']);
   }
 
   isAluno(usuario: any): usuario is AlunoViewModel {
@@ -81,7 +100,7 @@ export class DetalhesComponent implements OnInit {
       this.btnTitulo = "Detalhes do Instrutor";
     }else{
       this.btnAcao = this.usuarioDetalhes?.status === 'Ativo' ? 'Inativar Aluno' : 'Ativar Aluno';
-      this.btnTitulo = "Detalhes do Instrutor";
+      this.btnTitulo = "Detalhes do Aluno";
 
     }
   }

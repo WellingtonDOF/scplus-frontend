@@ -1,10 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { catchError, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
 
 /* Angular Material */
 import { MatButtonModule } from '@angular/material/button';
@@ -43,7 +40,7 @@ export class AulaFormComponent implements OnInit {
   constructor(private route: ActivatedRoute, private http: HttpClient, private aulaService: AulaService) { }
 
   ngOnInit(): void {
-      
+    
     const formControls: any = {
       id: new FormControl(this.dadosAula ? this.dadosAula.id : 0),
       tipoAula: new FormControl(this.dadosAula?.tipoAula || '', [
@@ -56,6 +53,7 @@ export class AulaFormComponent implements OnInit {
     };
 
     this.aulaForm = new FormGroup(formControls);
+    console.log(this.aulaForm.value);
   }  
 
   submit() {
