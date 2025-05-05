@@ -7,14 +7,9 @@
         <div class="input_box">
             <mat-form-field>
                 <mat-label>Tipo da Aula: </mat-label>
-                    <mat-select id="tipoAula" formControlName="tipoAula" required>
-                        <mat-option value="0">Simulado</mat-option>
-                        <mat-option value="1">Prática</mat-option>
-                        <mat-option value="2">Teórica</mat-option>
-                        <mat-option value="3">Prova</mat-option>
-                    </mat-select>           
+                <input matInput [value]="aulaForm.get('tipoAula')?.value" readonly>
             </mat-form-field>
-        </div>       
+        </div>
 
         <div class="input_box">
             <mat-form-field>

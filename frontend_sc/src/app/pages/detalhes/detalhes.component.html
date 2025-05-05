@@ -98,8 +98,13 @@
             </div>
 
             <div class="btn-box">
-                <button (click)="InativaUsuario()" mat-raised-button color="warn">{{btnAcao}}</button>
-                <button mat-raised-button routerLink="">Voltar</button>
+                
+                @if(exibirVoltarMatricula){
+                    <button mat-raised-button (click)="voltarParaMatriculas()">Voltar</button>
+                }@else{
+                    <button (click)="InativaUsuario()" mat-raised-button color="warn">{{btnAcao}}</button>
+                    <button mat-raised-button routerLink="">Voltar</button>
+                }
             </div>
         </form>
         }

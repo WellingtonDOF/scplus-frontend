@@ -102,8 +102,8 @@ export class AlunoFormComponent implements OnInit {
       ]),
       categoriaCnh: new FormControl(this.dadosAluno?.categoriaCnh || '', [
         Validators.required,
-        Validators.email
-      ]),    };
+      ]),    
+    };
 
     // 2. Campos para NOVO CADASTRO (não edição)
     if (!this.dadosAluno) {
