@@ -40,7 +40,7 @@ export class AulaFormComponent implements OnInit {
   constructor(private route: ActivatedRoute, private http: HttpClient, private aulaService: AulaService) { }
 
   ngOnInit(): void {
-    
+
     const formControls: any = {
       id: new FormControl(this.dadosAula ? this.dadosAula.id : 0),
       tipoAula: new FormControl(this.dadosAula?.tipoAula || '', [
