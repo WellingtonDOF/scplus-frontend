@@ -1,7 +1,7 @@
 import { PessoaResponseDTO } from "../pessoa/PessoaResponseDTO";
 
 export interface AlunoResponseDTO extends PessoaResponseDTO{
-    categoriaCnh: string;
+    observacao: string;
     statusPagamento : string;
     statusCurso : string;
 }

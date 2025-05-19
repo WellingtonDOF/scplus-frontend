@@ -59,12 +59,14 @@
                 </div>
             }
 
+            @if(!isAluno(usuarioDetalhes)){
             <div class="input_box">
                 <mat-form-field>
                     <mat-label>Categoria CNH Desejada: </mat-label>
                     <input matInput type="text" value="{{usuarioDetalhes.categoriaCnh}}" disabled>
                 </mat-form-field>
             </div>
+            }
 
             @if(isAluno(usuarioDetalhes)) 
             {

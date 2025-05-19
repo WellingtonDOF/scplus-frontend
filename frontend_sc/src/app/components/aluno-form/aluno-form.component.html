@@ -111,7 +111,7 @@
                            [required]="dadosAluno === null">
                     <button mat-icon-button 
                             matSuffix 
-                            (click)="toggleSenha($event)"
+                            (click)="toggleSenha($event, 'senha')"
                             [attr.aria-label]="hideSenha ? 'Mostrar senha' : 'Ocultar senha'">
                         <mat-icon>{{hideSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
@@ -130,7 +130,7 @@
                            placeholder="Insira a senha!">
                     <button mat-icon-button 
                            matSuffix 
-                           (click)="toggleSenha($event)"
+                           (click)="toggleSenha($event, 'senha')"
                            [attr.aria-label]="hideSenha ? 'Mostrar senha' : 'Ocultar senha'">
                        <mat-icon>{{hideSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
                    </button>
@@ -143,20 +143,25 @@
         
         <div class="input_box">
             <mat-form-field>
-              <mat-label>Confirme a Senha:</mat-label>
-              <input matInput
-                     [type]="hideSenha ? 'password' : 'text'"
-                     formControlName="confirmaSenha"
-                     placeholder="Confirme a senha!">
-          
-              @if (alunoForm.hasError('senhasDiferentes') && alunoForm.get('confirmaSenha')?.touched) {
+                <mat-label>Confirme a Senha:</mat-label>
+                <input matInput
+                        [type]="hideConfirmarSenha ? 'password' : 'text'"
+                        formControlName="confirmaSenha"
+                        placeholder="Confirme a senha!">
+                        <button mat-icon-button 
+                                matSuffix 
+                                (click)="toggleSenha($event, 'confirmar')"
+                                [attr.aria-label]="hideConfirmarSenha ? 'Mostrar senha' : 'Ocultar senha'">
+                            <mat-icon>{{hideConfirmarSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                @if (alunoForm.hasError('senhasDiferentes') && alunoForm.get('confirmaSenha')?.touched) {
                 <mat-error>As senhas não coincidem.</mat-error>
-              }
+                }
             </mat-form-field>
-          </div>
-          
-          
-          
+        </div>
+
+        @if(tipoCadastro==='instrutor' && dadosAluno === null){
+        
         <div class="input_box">
             <mat-form-field>
                 <mat-label>Categoria CNH: </mat-label>
@@ -167,9 +172,19 @@
                     </mat-select>           
             </mat-form-field>
         </div>       
+        }
+
+        <div class="input_box">
+            <mat-form-field>
+                <mat-label>Observação:</mat-label>
+                <textarea matInput type="text" formControlName="observacao" rows="1" cols="25" placeholder="Insira a observação sobre o aluno!" maxlength="500"></textarea>
+                @if (alunoForm.get('observacao')?.invalid && alunoForm.get('observacao')?.touched) {
+                  <mat-error>Descrição deve ter entre 5 e 150 caracteres</mat-error>
+                }
+            </mat-form-field>
+        </div>
 
         @if (dadosAluno === null) {
-
             @if(tipoCadastro==='instrutor'){
                 <div class="input_box">
                     <mat-form-field>
@@ -181,6 +196,7 @@
                     </mat-form-field>
                 </div>
             }
+            <!--
             @else {
                 <div class="input_box">
                     <mat-form-field>
@@ -190,7 +206,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-            }
+            }-->
         }
     
         <div class="btn-box">
