@@ -41,7 +41,7 @@ export class AlunoService {
         dataNascimento: alunoResponse.dataNascimento, 
         tipoUsuario: alunoResponse.tipoUsuario,
         status: alunoResponse.status,
-        categoriaCnh: alunoResponse.categoriaCnh,
+        observacao: alunoResponse.observacao,
         statusPagamento: alunoResponse.statusPagamento,
         statusCurso: alunoResponse.statusCurso
       };

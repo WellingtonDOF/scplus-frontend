@@ -56,6 +56,7 @@ export class AlunoFormComponent implements OnInit {
   alunoForm!: FormGroup;
   id: number | null = null;
   hideSenha: boolean = true;
+  hideConfirmarSenha: boolean = true;
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private alunoService: AlunoService) { }
 
@@ -103,9 +104,6 @@ export class AlunoFormComponent implements OnInit {
         this.dadosAluno ? Validators.nullValidator : Validators.required,
         Validators.minLength(6)
       ]),
-      categoriaCnh: new FormControl(this.dadosAluno?.categoriaCnh || '', [
-        Validators.required,
-      ]),    
     };
 
     // 2. Campos para NOVO CADASTRO (não edição)
@@ -125,9 +123,9 @@ export class AlunoFormComponent implements OnInit {
 
     // 3. Campos ESPECÍFICOS para ALUNO
     if (this.tipoCadastro === 'aluno') {
-      formControls.categoriaCnh = new FormControl(
-        (this.dadosAluno as AlunoViewModel)?.categoriaCnh || '',
-        [Validators.required]
+      formControls.observacao = new FormControl(
+        (this.dadosAluno as AlunoViewModel)?.observacao || '',
+        [Validators.maxLength(500)] //Validators.required,
       );
     }
 
@@ -155,12 +153,11 @@ export class AlunoFormComponent implements OnInit {
 
     formControls.confirmaSenha = new FormControl('', Validators.required);
     // Cria o FormGroup com todos os controles
-    this.alunoForm = new FormGroup(formControls);
-
     this.alunoForm = new FormGroup(formControls, {
       validators: this.matchPasswords,
     });
-    
+
+    console.log(this.alunoForm.validator); // Deve **não ser null** se o validador foi atribuído corretamente
     this.route.params.subscribe(params => {
       this.id = +params['id'];
       if (this.id && this.dadosAluno) {
@@ -178,7 +175,6 @@ export class AlunoFormComponent implements OnInit {
       .subscribe(() => {
         this.alunoForm.get('cpf')?.updateValueAndValidity();
       });
-      
     });
 
     this.alunoForm.get('telefone')?.valueChanges.subscribe(value => {
@@ -191,17 +187,23 @@ export class AlunoFormComponent implements OnInit {
   matchPasswords(group: AbstractControl): ValidationErrors | null {
     const senha = group.get('senha')?.value;
     const confirmaSenha = group.get('confirmaSenha')?.value;
+    console.log(senha);
+    console.log(confirmaSenha);
   
     if (!confirmaSenha) return null; // evita erro antes de digitar
-  
+        
     return senha === confirmaSenha ? null : { senhasDiferentes: true };
   }
   
-  
-  toggleSenha(event: Event): void {
+  toggleSenha(event: Event, campo: 'senha' | 'confirmar'): void {
     event.preventDefault(); // Garante que não cause submit ou outros efeitos
     event.stopPropagation(); // Evita que a ação dispare nos elementos pai
-    this.hideSenha = !this.hideSenha;
+
+    if(campo ==='senha'){
+      this.hideSenha = !this.hideSenha;
+    }
+    else
+        this.hideConfirmarSenha = !this.hideConfirmarSenha;
   }
 
   validateCpfExists(control: AbstractControl): Observable<ValidationErrors | null> {
@@ -309,7 +311,8 @@ export class AlunoFormComponent implements OnInit {
       } else {
         if (this.tipoCadastro === 'aluno') {
           const alunoData = formData as AlunoCreateDTO;
-          alunoData.categoriaCnh = this.alunoForm.get('categoriaCnh')?.value;
+          alunoData.observacao = this.alunoForm.get('observacao')?.value;
+          alunoData.tipoUsuario="Aluno";
           this.onSubmit.emit(alunoData);
         } else if (this.tipoCadastro === 'instrutor') {
           const instrutorData = formData as InstrutorCreateDTO;

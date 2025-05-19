@@ -45,11 +45,11 @@ export class EditarComponent implements OnInit{
     }
   }
 
-  handleFormData(formData: AlunoUpdateDTO | AlunoUpdateDTO) {
+  handleFormData(formData: AlunoUpdateDTO | InstrutorUpdateDTO) {
     if (this.tipoCadastro === 'aluno') {
-      this.editarAluno(formData);
+      this.editarAluno(formData as AlunoUpdateDTO);
     } else if (this.tipoCadastro === 'instrutor') {
-      this.editarInstrutor(formData);
+      this.editarInstrutor(formData as InstrutorUpdateDTO);
     } else {
       console.error('Tipo de formulário ou dados inválidos para o tipo de edição.');
     }

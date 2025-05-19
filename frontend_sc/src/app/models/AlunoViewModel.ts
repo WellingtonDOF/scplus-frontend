@@ -8,7 +8,7 @@ export interface AlunoViewModel{
     dataNascimento: string; // ou date
     tipoUsuario: string;  
     status: string;
-    categoriaCnh: string;
+    observacao: string;
     statusPagamento : string;
     statusCurso : string;
 }

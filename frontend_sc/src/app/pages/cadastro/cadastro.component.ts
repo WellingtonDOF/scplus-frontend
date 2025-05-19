@@ -32,10 +32,10 @@ export class CadastroComponent implements OnInit{
   }
 
   handleFormData(formData: AlunoCreateDTO | InstrutorCreateDTO) {
-    if (this.tipoCadastro === 'aluno' && 'categoriaCnh' in formData) {
-      this.createAluno(formData);
+    if (this.tipoCadastro === 'aluno' && 'observacao' in formData) {
+      this.createAluno(formData as AlunoCreateDTO) ;
     } else if (this.tipoCadastro === 'instrutor' && 'categoriaCnh' in formData && 'dataAdmissao' in formData) {
-      this.createInstrutor(formData);
+      this.createInstrutor(formData as InstrutorCreateDTO);
     } else {
       console.error('Tipo de formulário ou dados inválidos para o tipo de cadastro.');
     }
