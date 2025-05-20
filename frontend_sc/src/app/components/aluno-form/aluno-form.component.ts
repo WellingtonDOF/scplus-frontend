@@ -118,7 +118,7 @@ export class AlunoFormComponent implements OnInit {
         this.validateAge
       ]);
 
-      formControls.tipoUsuario = new FormControl('', [Validators.required]);
+      formControls.tipoUsuario = new FormControl('Aluno', [Validators.required]);
     }
 
     // 3. Campos ESPECÍFICOS para ALUNO
@@ -151,7 +151,7 @@ export class AlunoFormComponent implements OnInit {
       );
     }
 
-    formControls.confirmaSenha = new FormControl('', Validators.required);
+    formControls.confirmaSenha = new FormControl('', [Validators.required, Validators.minLength(6), this.matchPasswords]);
     // Cria o FormGroup com todos os controles
     this.alunoForm = new FormGroup(formControls, {
       validators: this.matchPasswords,
