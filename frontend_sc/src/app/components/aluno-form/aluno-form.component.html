@@ -157,6 +157,9 @@
                 @if (alunoForm.hasError('senhasDiferentes') && alunoForm.get('confirmaSenha')?.touched) {
                 <mat-error>As senhas não coincidem.</mat-error>
                 }
+                @if (alunoForm.get('confirmaSenha')?.hasError('minlength')) {
+                    <mat-error>Senha deve ter pelo menos 6 caracteres</mat-error>
+                }
             </mat-form-field>
         </div>
 

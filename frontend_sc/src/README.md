@@ -6,7 +6,7 @@ Este projeto é um sistema de gerenciamento desenvolvido para a Autoescola São 
 ## Passos Iniciais
 Siga os passos abaixo para iniciar o frontend :
 
-#### Passo 1 (iniciar banco):
+#### Passo 1 (iniciar o projeto):
 - Dar o comando **npm install** para instalar as dependências
 - Realizar o comando **npm install -g @angular/cli** para instalar dependências e serviços angular
 - Executar o prompt PowerShell como admin e dar o comando **Set-ExecutionPolicy Unrestricted** e confirmar com **S**. 
