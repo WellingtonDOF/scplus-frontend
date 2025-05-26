@@ -100,12 +100,13 @@ export class MatriculaFormComponent implements OnInit {
     return this.matriculaService.VerificarCpfExistente(cpfNumeros).pipe(
       map(response => {
         // Caso de sucesso (CPF válido e sem matrícula)
+        console.log('Resposta da API:', response);
         if (response.sucesso && response.dados! > 0) {
           this.matriculaForm.get('alunoId')?.setValue(response.dados);
           return null;
         }
         // CPF existe mas já tem matrícula
-        else if (response.dados === -1 && response.mensagem.includes('já possui')) {
+        else if (response.dados === -1 && response.mensagem.includes('Usuário já possui matrícula ativa.')) {
           this.matriculaForm.get('alunoId')?.setValue(null);
           return { matriculaExists: true };
         }
