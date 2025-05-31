@@ -177,6 +177,7 @@
         </div>       
         }
 
+        @if(tipoCadastro==='aluno'){
         <div class="input_box">
             <mat-form-field>
                 <mat-label>Observação:</mat-label>
@@ -186,6 +187,7 @@
                 }
             </mat-form-field>
         </div>
+        }
 
         @if (dadosAluno === null) {
             @if(tipoCadastro==='instrutor'){
@@ -214,7 +216,12 @@
     
         <div class="btn-box">
             <button type="submit" [disabled]="!alunoForm.valid" mat-raised-button class="custom-button">{{btnAcao}}</button>
-            <button routerLink="" mat-raised-button>Voltar</button>
+
+            @if(tipoCadastro === 'instrutor'){
+                <button routerLink="/instrutor" mat-raised-button>Voltar</button>
+            } @else {
+                <button routerLink="/aluno" mat-raised-button>Voltar</button>
+            }
         </div>        
     </form>
 </mat-card>

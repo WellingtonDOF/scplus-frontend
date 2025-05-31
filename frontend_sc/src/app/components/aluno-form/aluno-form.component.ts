@@ -76,8 +76,7 @@ export class AlunoFormComponent implements OnInit {
       } else {
         telefoneFormatado = this.dadosAluno.telefone; // Se não corresponder, usa o valor original
       }
-      }
-
+    }
       
     // 1. Campos COMUNS a todos
     const formControls: any = {
@@ -151,7 +150,12 @@ export class AlunoFormComponent implements OnInit {
       );
     }
 
-    formControls.confirmaSenha = new FormControl('', [Validators.required, Validators.minLength(6), this.matchPasswords]);
+     formControls.confirmaSenha = new FormControl('', [
+      this.dadosAluno ? Validators.nullValidator : Validators.required, // <--- ALTERAÇÃO AQUI!
+      Validators.minLength(6),
+      // O validador matchPasswords é aplicado no FormGroup, então não precisa aqui
+    ]);
+
     // Cria o FormGroup com todos os controles
     this.alunoForm = new FormGroup(formControls, {
       validators: this.matchPasswords,
@@ -184,16 +188,33 @@ export class AlunoFormComponent implements OnInit {
     });
   }
 
-  matchPasswords(group: AbstractControl): ValidationErrors | null {
-    const senha = group.get('senha')?.value;
-    const confirmaSenha = group.get('confirmaSenha')?.value;
-    console.log(senha);
-    console.log(confirmaSenha);
-  
-    if (!confirmaSenha) return null; // evita erro antes de digitar
-        
-    return senha === confirmaSenha ? null : { senhasDiferentes: true };
+matchPasswords(group: AbstractControl): ValidationErrors | null {
+  const senhaControl = group.get('senha');
+  const confirmaSenhaControl = group.get('confirmaSenha');
+
+  const senha = senhaControl?.value;
+  const confirmaSenha = confirmaSenhaControl?.value;
+
+  if ((!senha && !confirmaSenha) ||
+      (senhaControl?.hasError('required') && !confirmaSenha) ||
+      (confirmaSenhaControl?.hasError('required') && !senha) ) { 
+    return null; 
   }
+
+  if (senha !== confirmaSenha) {
+    confirmaSenhaControl?.setErrors({ senhasDiferentes: true });
+    return { senhasDiferentes: true };
+  } else {
+    if (confirmaSenhaControl?.hasError('senhasDiferentes')) {
+        const errors = confirmaSenhaControl.errors;
+        if (errors) {
+            delete errors['senhasDiferentes'];
+            confirmaSenhaControl.setErrors(Object.keys(errors).length ? errors : null);
+        }
+    }
+    return null; 
+  }
+}
   
   toggleSenha(event: Event, campo: 'senha' | 'confirmar'): void {
     event.preventDefault(); // Garante que não cause submit ou outros efeitos

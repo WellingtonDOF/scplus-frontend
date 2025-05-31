@@ -10,6 +10,7 @@ import { MatriculaResponseDTO } from '../dto/matricula/MatriculaResponseDTO';
 import { MatriculaViewModel } from '../models/MatriculaViewModel';
 import { MatriculaCreateDTO } from '../dto/matricula/MatriculaCreateDTO';
 import { MatriculaUpdateDTO } from '../dto/matricula/MatriculaUpdateDTO';
+import { MatriculaAlunoDTO } from '../dto/matricula/MatriculaAlunoDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -61,19 +62,18 @@ export class MatriculaService {
       );
     }
 
-    VerificarCpfExistente(cpf: string): Observable<Response<number>> {
-      return this.http.get<Response<number>>(`${this.apiUrl}/verificar-cpf/${cpf}`).pipe(
+    VerificarCpfExistente(cpf: string): Observable<Response<MatriculaAlunoDTO | null>> {
+      return this.http.get<Response<MatriculaAlunoDTO | null>>(`${this.apiUrl}/verificar-cpf/${cpf}`).pipe(
         map(response => {
-          if(response.sucesso) {
-            const existe = response.dados ?? -1;
-            return new ResponseSucesso<number>(existe, response.mensagem);
-          } else {
-            return new ResponseErro<number>(-1, response.mensagem);
+          if (response.sucesso && response.dados) { 
+              return new ResponseSucesso<MatriculaAlunoDTO>(response.dados, response.mensagem);
           }
+          
+          return new ResponseErro<MatriculaAlunoDTO | null>(response.dados, response.mensagem);
         }),
         catchError(error => {
           console.error('Erro na verificação de CPF:', error);
-          return of(new ResponseErro<number>(-1, 'Erro ao verificar CPF.'));
+          return of(new ResponseErro<MatriculaAlunoDTO | null>(null, 'Erro ao verificar CPF.'));
         })
       );
     }
