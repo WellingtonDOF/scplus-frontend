@@ -28,6 +28,11 @@ export class CadastroComponent implements OnInit{
       this.tipoCadastro = params['tipo'] === 'instrutor' ? 'instrutor' : 'aluno';
     });  
 
+    if (this.tipoCadastro === 'instrutor') {
+      this.btnTitulo = "Cadastrar Instrutor";
+    } else {
+      this.btnTitulo = "Cadastrar Aluno";
+    }
     console.log(this.tipoCadastro)
   }
 

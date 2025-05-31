@@ -105,7 +105,12 @@
                     <button mat-raised-button (click)="voltarParaMatriculas()">Voltar</button>
                 }@else{
                     <button (click)="InativaUsuario()" mat-raised-button color="warn">{{btnAcao}}</button>
-                    <button mat-raised-button routerLink="">Voltar</button>
+
+                    @if(tipoCadastro === 'aluno'){
+                        <button mat-raised-button routerLink="/aluno">Voltar</button>
+                    } @else {
+                        <button mat-raised-button routerLink="/instrutor">Voltar</button>
+                    }
                 }
             </div>
         </form>

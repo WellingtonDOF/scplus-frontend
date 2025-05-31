@@ -15,9 +15,13 @@ import { VeiculoComponent } from './pages/veiculo/veiculo/veiculo.component';
 import { CadastroVeiculoComponent } from './pages/cadastro/cadastro-veiculo/cadastro-veiculo.component';
 import { DetalhesVeiculoComponent } from './pages/detalhes/detalhes-veiculo/detalhes-veiculo.component';
 import { EditarVeiculoComponent } from './pages/editar/editar-veiculo/editar-veiculo.component';
+import { authGuard } from './guards/auth.guard';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 
 export const routes: Routes = [
-    { path : '', component: HomeComponent},
+    { path: 'login', component: LoginFormComponent },
+
+    { path : 'aluno', component: HomeComponent},
     //parte de aluno e instrutor
     { path : "instrutor", component: InstrutorComponent},
     { path: "cadastro", component: CadastroComponent },
@@ -29,12 +33,15 @@ export const routes: Routes = [
     { path: "editaraula/:id", component: EditarAulaComponent},
     //parte de matrícula
     { path: "matricula", component: MatriculaComponent}, 
-    { path: "cadastro-matricula", component: CadastroMatriculaComponent}, 
-    { path: "detalhesmatricula/:id", component: DetalhesMatriculaComponent},
-    { path: "editarmatricula/:id", component: EditarMatriculaComponent},
+    { path: "cadastro-matricula", component: CadastroMatriculaComponent, canActivate: [authGuard]}, 
+    { path: "detalhesmatricula/:id", component: DetalhesMatriculaComponent, canActivate: [authGuard]},
+    { path: "editarmatricula/:id", component: EditarMatriculaComponent, canActivate: [authGuard]},
     //parte de veículo
     { path: "veiculo", component: VeiculoComponent}, 
     { path: "cadastro-veiculo", component: CadastroVeiculoComponent}, 
     { path: "detalhesveiculo/:id", component: DetalhesVeiculoComponent},
     { path: "editarveiculo/:id", component: EditarVeiculoComponent},
+
+    // Redirecionamento padrão
+    { path: '**', redirectTo: 'login' } 
 ];

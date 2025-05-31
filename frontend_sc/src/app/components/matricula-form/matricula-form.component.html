@@ -4,9 +4,8 @@
 
         @if(dadosMatricula===null){
             <input type="hidden" formControlName="id">
-
-        <input type="hidden" formControlName="alunoId">
-    }
+            <input type="hidden" formControlName="alunoId">
+        }
 
         @if(dadosMatricula===null){
             <div class="input_box">
@@ -26,9 +25,45 @@
                     @if (matriculaForm.get('cpf')?.hasError('matriculaExists')) {
                         <mat-error>Este aluno já possui uma matrícula ativa</mat-error>
                     }
+                    @if (matriculaForm.get('cpf')?.hasError('isNotAluno')) {
+                        <mat-error>CPF cadastrado, mas não corresponde a um Aluno.</mat-error>
+                    }
+                    @if (matriculaForm.get('cpf')?.hasError('cpfError')) {
+                        <mat-error>Erro na verificação do CPF, entre em contato com um administrador.</mat-error>
+                    }
+                </mat-form-field>
+
+                @if(matriculaForm.get('cpf')?.valid && !matriculaForm.get('cpf')?.pending && dadosMatricula === null) {
+                    <span style="cursor: pointer" (click)="toggleExibirDadosAluno()" >
+                        <mat-icon>{{ exibirDadosAluno ? 'expand_less' : 'expand_more' }}</mat-icon>
+                    </span>
+                }
+            </div>
+        }
+
+        @if(dadosMatricula===null && exibirDadosAluno){
+            <div class="input_box">
+                <mat-form-field>
+                    <mat-label>Nome: </mat-label>
+                    <input matInput type="text" formControlName="nomeCompleto" >
                 </mat-form-field>
             </div>
-        }   
+
+            <div class="input_box">
+                <mat-form-field>
+                    <mat-label>Telefone: </mat-label>
+                    <input matInput type="text" formControlName="telefone" >
+                </mat-form-field>
+            </div>
+
+            <div class="input_box">
+                <mat-form-field>
+                    <mat-label>Email: </mat-label>
+                    <input matInput type="text" formControlName="email" >
+                </mat-form-field>
+            </div>
+        }
+         
 
         <div class="input_box">
             <mat-form-field>

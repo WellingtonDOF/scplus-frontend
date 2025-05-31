@@ -9,13 +9,15 @@ import { Observable, of } from 'rxjs';
 import { MatriculaCreateDTO } from '../../dto/matricula/MatriculaCreateDTO';
 import { MatriculaUpdateDTO } from '../../dto/matricula/MatriculaUpdateDTO';
 import { MatriculaViewModel } from '../../models/MatriculaViewModel';
+import { MatriculaService } from '../../services/matricula.service';
+import { TelefoneService } from '../../services/telefone.service';
 
 /* Angular Material */
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatriculaService } from '../../services/matricula.service';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -27,6 +29,7 @@ import { MatriculaService } from '../../services/matricula.service';
     MatButtonModule,
     MatCardModule,
     MatInputModule,
+    MatIconModule,
     MatSelectModule,
     NgxMaskDirective,
   ],
@@ -42,11 +45,12 @@ export class MatriculaFormComponent implements OnInit {
   @Input() btnAcao!: string;
   @Input() btnTitulo!: string;
   @Input() dadosMatricula: MatriculaViewModel | null = null;
+  @Input() exibirDadosAluno: boolean = false;
 
   matriculaForm!: FormGroup;
   id: number | null = null; 
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private matriculaService: MatriculaService) { }
+  constructor(private route: ActivatedRoute, private http: HttpClient, private matriculaService: MatriculaService, private telefoneService: TelefoneService) { }
 
   ngOnInit(): void {
     const formControls: any = {
@@ -66,7 +70,12 @@ export class MatriculaFormComponent implements OnInit {
         validators: [Validators.required, this.validateCpf.bind(this)],
         asyncValidators: [(control: AbstractControl) => this.validateCpfExists(control)]
       });
+
+      formControls.nomeCompleto = new FormControl({value: '', disabled: true});
+      formControls.email = new FormControl({value: '', disabled: true}); 
+      formControls.telefone = new FormControl({value: '', disabled: true});
     }
+  
 
     this.matriculaForm = new FormGroup(formControls);
 
@@ -89,7 +98,27 @@ export class MatriculaFormComponent implements OnInit {
       
     });
   }
-  
+
+  toggleExibirDadosAluno(): void {
+    this.exibirDadosAluno = !this.exibirDadosAluno;
+  }
+
+  inserirDadosAlunoMatricula(response: any) {
+    if (response!=null) {
+        this.matriculaForm.get('alunoId')?.setValue(response.id);
+        this.matriculaForm.get('nomeCompleto')?.setValue(response.nomeCompleto);
+        this.matriculaForm.get('email')?.setValue(response.email);
+        this.matriculaForm.get('telefone')?.setValue(this.telefoneService.formatarTelefone(response.telefone));
+        this.exibirDadosAluno = true;
+    } else {
+        this.matriculaForm.get('alunoId')?.setValue('');
+        this.matriculaForm.get('nomeCompleto')?.setValue('');
+        this.matriculaForm.get('email')?.setValue('');
+        this.matriculaForm.get('telefone')?.setValue('');
+        this.exibirDadosAluno = false; 
+    }
+  }
+
   validateCpfExists(control: AbstractControl): Observable<ValidationErrors | null> {
     if (!control.value || this.dadosMatricula) {
       return of(null);
@@ -101,23 +130,29 @@ export class MatriculaFormComponent implements OnInit {
       map(response => {
         // Caso de sucesso (CPF válido e sem matrícula)
         console.log('Resposta da API:', response);
-        if (response.sucesso && response.dados! > 0) {
-          this.matriculaForm.get('alunoId')?.setValue(response.dados);
+        this.inserirDadosAlunoMatricula(response.dados);
+
+        if (response.sucesso && response.dados!= null) {
+          console.log('teste')
           return null;
         }
         // CPF existe mas já tem matrícula
-        else if (response.dados === -1 && response.mensagem.includes('Usuário já possui matrícula ativa.')) {
-          this.matriculaForm.get('alunoId')?.setValue(null);
+        else if (response.mensagem.includes('Usuário já possui matrícula ativa.')) {
           return { matriculaExists: true };
         }
-        // CPF não existe
-        else {
-          this.matriculaForm.get('alunoId')?.setValue(null);
-          return { cpfNotExists: true };
+        else if(response.mensagem.includes('CPF cadastrado, mas não corresponde a um Aluno.')){
+          return { isNotAluno: true };
         }
+        // CPF não existe
+        else if(response.mensagem.includes('CPF não cadastrado.')){
+            return { cpfNotExists: true };
+        }else{
+          // Erro genérico
+          return { cpfError: true };
+        }
+        //}
       }),
       catchError(() => {
-        this.matriculaForm.get('alunoId')?.setValue(null);
         return of({ cpfError: true });
       })
     );
@@ -129,8 +164,13 @@ export class MatriculaFormComponent implements OnInit {
     if (!cpf) return null;
     
     // Validação básica de CPF
-    if (cpf.length !== 11) return { invalidCpf: true };
-    
+    if (cpf.length !== 11){
+      this.inserirDadosAlunoMatricula(null);
+      return {
+        invalidCpf: true
+      };
+    }
+
     // Verifica se todos os dígitos são iguais
     if (/^(\d)\1{10}$/.test(cpf)) return { invalidCpf: true };
     
