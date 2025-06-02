@@ -17,31 +17,36 @@ import { DetalhesVeiculoComponent } from './pages/detalhes/detalhes-veiculo/deta
 import { EditarVeiculoComponent } from './pages/editar/editar-veiculo/editar-veiculo.component';
 import { authGuard } from './guards/auth.guard';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
+
+    //REDIRECIONAMENTO PADRÃO SEMPRE QUE APLICATIVO FOR INICIADO
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    //PARTE DE LOGIN
     { path: 'login', component: LoginFormComponent },
-
-    { path : 'aluno', component: HomeComponent},
+    //parte de aluno
+    { path: 'aluno', component: HomeComponent,canActivate: [authGuard] },
     //parte de aluno e instrutor
-    { path : "instrutor", component: InstrutorComponent},
-    { path: "cadastro", component: CadastroComponent },
-    { path: "editar/:id", component: EditarComponent },
-    { path: "detalhes/:id", component: DetalhesComponent}, 
+    { path : "instrutor", component: InstrutorComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+    { path: "cadastro", component: CadastroComponent,canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } }, // Apenas Admin pode cadastrar
+    { path: "editar/:id", component: EditarComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+    { path: "detalhes/:id", component: DetalhesComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
     //parte de aula
-    { path: "aula", component: AulaComponent}, 
-    { path: "detalhesaula/:id", component: DetalhesAulaComponent}, 
-    { path: "editaraula/:id", component: EditarAulaComponent},
+    { path: "aula", component: AulaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+    { path: "detalhesaula/:id", component: DetalhesAulaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+    { path: "editaraula/:id", component: EditarAulaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
     //parte de matrícula
-    { path: "matricula", component: MatriculaComponent}, 
-    { path: "cadastro-matricula", component: CadastroMatriculaComponent, canActivate: [authGuard]}, 
-    { path: "detalhesmatricula/:id", component: DetalhesMatriculaComponent, canActivate: [authGuard]},
-    { path: "editarmatricula/:id", component: EditarMatriculaComponent, canActivate: [authGuard]},
+    { path: "matricula", component: MatriculaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin', 'Instrutor'] } },
+    { path: "cadastro-matricula", component: CadastroMatriculaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } }, // Apenas Admin pode cadastrar matrícula
+    { path: "detalhesmatricula/:id", component: DetalhesMatriculaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+    { path: "editarmatricula/:id", component: EditarMatriculaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
     //parte de veículo
-    { path: "veiculo", component: VeiculoComponent}, 
-    { path: "cadastro-veiculo", component: CadastroVeiculoComponent}, 
-    { path: "detalhesveiculo/:id", component: DetalhesVeiculoComponent},
-    { path: "editarveiculo/:id", component: EditarVeiculoComponent},
+    { path: "veiculo", component: VeiculoComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+    { path: "cadastro-veiculo", component: CadastroVeiculoComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } }, // Apenas Admin pode cadastrar veículo
+    { path: "detalhesveiculo/:id", component: DetalhesVeiculoComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+    { path: "editarveiculo/:id", component: EditarVeiculoComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
 
-    // Redirecionamento padrão
+    // Redirecionamento padrão caso não ache
     { path: '**', redirectTo: 'login' } 
 ];

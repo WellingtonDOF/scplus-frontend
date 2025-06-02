@@ -154,7 +154,7 @@ export class LoginFormComponent implements OnInit {
         this.router.navigate(['/instrutor']);
         break;
       case 'Aluno':
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
         break;
       default:
         this.router.navigate(['/']);

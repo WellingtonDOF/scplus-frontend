@@ -1,11 +1,13 @@
 import { CanActivateFn, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { map, take } from 'rxjs/operators';
+import { NotificationService } from '../services/notification.service';
+import { map, take, tap } from 'rxjs/operators';
 
 export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const notificationService = inject(NotificationService);
 
   return authService.isLoggedIn().pipe(
     take(1),
@@ -33,8 +35,20 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
       if (hasPermission) {
         return true;
       } else {
-        // Redirecionar para página de acesso negado ou dashboard apropriado
-        return router.createUrlTree(['/acesso-negado']);
+        // Mostrar mensagem de erro
+        notificationService.showAccessDenied();
+        
+        // Redirecionar para página apropriada baseada no tipo de usuário
+        switch (userType) {
+          case 'Admin':
+            return router.createUrlTree(['/dashboard']);
+          case 'Instrutor':
+            return router.createUrlTree(['/dashboard']);
+          case 'Aluno':
+            return router.createUrlTree(['/dashboard']);
+          default:
+            return router.createUrlTree(['/login']);
+        }
       }
     })
   );
