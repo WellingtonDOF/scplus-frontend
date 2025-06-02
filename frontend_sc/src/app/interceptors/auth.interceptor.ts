@@ -29,14 +29,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           panelClass: ['error-snackbar']
         });
         authService.logout();
-        router.navigate(['/login']);
+
       } else if (error.status === 403) {
         // Acesso negado
         snackBar.open('Você não tem permissão para acessar este recurso.', 'Fechar', {
           duration: 5000,
           panelClass: ['error-snackbar']
         });
-        router.navigate(['/acesso-negado']);
+        router.navigate(['/login']);
+
       } else if (error.status === 0) {
         // Erro de conexão
         snackBar.open('Erro de conexão com o servidor.', 'Fechar', {

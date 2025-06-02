@@ -4,6 +4,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http'; // I
 import { routes } from './app.routes';
 import { provideNgxMask } from 'ngx-mask'; 
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,5 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])), //esse interceptor adiciona o token de autenticação a todas as requisições HTTP
     provideNgxMask(), 
+    
   ]
 };
