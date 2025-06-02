@@ -36,7 +36,7 @@
                     <mat-list-item class="nav-subitem" routerLink="/instrutor" routerLinkActive="active">
                     <span matListItemTitle>Listar</span>
                     </mat-list-item>
-                    <mat-list-item class="nav-subitem" routerLink="/instrutor" routerLinkActive="active">
+                    <mat-list-item class="nav-subitem" routerLink="/cadastro" [queryParams]="{tipo: 'instrutor'}" routerLinkActive="active">
                     <span matListItemTitle>Cadastrar</span>
                     </mat-list-item>
                 </div>
@@ -54,7 +54,7 @@
                     <mat-list-item class="nav-subitem" routerLink="/aluno" routerLinkActive="active">
                     <span matListItemTitle>Listar</span>
                     </mat-list-item>
-                    <mat-list-item class="nav-subitem" routerLink="/aluno" routerLinkActive="active">
+                    <mat-list-item class="nav-subitem" routerLink="/cadastro" [queryParams]="{tipo: 'aluno'}" routerLinkActive="active">
                     <span matListItemTitle>Cadastrar</span>
                     </mat-list-item>
                 </div>
@@ -92,7 +92,7 @@
                     <mat-list-item class="nav-subitem" routerLink="/veiculo" routerLinkActive="active">
                     <span matListItemTitle>Listar</span>
                     </mat-list-item>
-                    <mat-list-item class="nav-subitem" routerLink="/veiculo" routerLinkActive="active">
+                    <mat-list-item class="nav-subitem" routerLink="/cadastro-veiculo" routerLinkActive="active">
                     <span matListItemTitle>Cadastrar</span>
                     </mat-list-item>
                 </div>
@@ -111,12 +111,53 @@
                     <mat-list-item class="nav-subitem" routerLink="/matricula" routerLinkActive="active">
                     <span matListItemTitle>Listar</span>
                     </mat-list-item>
-                    <mat-list-item class="nav-subitem" routerLink="/matricula" routerLinkActive="active">
+                    <mat-list-item class="nav-subitem" routerLink="/cadastro-matricula" routerLinkActive="active">
                     <span matListItemTitle>Nova Matrícula</span>
                     </mat-list-item>
                 </div>
                 </div>
              }
+
+            @if(isAdmin) {
+            <!-- Pagamentos -->
+                <div class="nav-item-container">
+                <mat-list-item class="nav-item expandable" (click)="toggleSubmenu('pagamento')">
+                    <mat-icon matListItemIcon>payment</mat-icon>
+                    <span matListItemTitle>Pagamentos</span>
+                    <mat-icon class="expand-icon" [class.expanded]="submenuStates['pagamento']">expand_more</mat-icon>
+                </mat-list-item>
+                <div class="submenu" [class.expanded]="submenuStates['pagamento']">
+                    <mat-list-item class="nav-subitem" routerLink="/pagamento" routerLinkActive="active">
+                    <span matListItemTitle>Listar</span>
+                    </mat-list-item>
+                    <mat-list-item class="nav-subitem" routerLink="/cadastro-pagamento" routerLinkActive="active">
+                    <span matListItemTitle>Novo Pagamento</span>
+                    </mat-list-item>
+                </div>
+                </div>
+            }
+
+            @if(isAdmin) {
+            <!-- Parcelas -->
+                <div class="nav-item-container">
+                <mat-list-item class="nav-item expandable" (click)="toggleSubmenu('parcela')">
+                    <mat-icon matListItemIcon>receipt</mat-icon>
+                    <span matListItemTitle>Parcelas</span>
+                    <mat-icon class="expand-icon" [class.expanded]="submenuStates['parcela']">expand_more</mat-icon>
+                </mat-list-item>
+                <div class="submenu" [class.expanded]="submenuStates['parcela']">
+                    <mat-list-item class="nav-subitem" routerLink="/parcela" routerLinkActive="active">
+                    <span matListItemTitle>Listar</span>
+                    </mat-list-item>
+                    <mat-list-item class="nav-subitem" routerLink="/parcela" [queryParams]="{filter: 'vencidas'}" routerLinkActive="active">
+                    <span matListItemTitle>Vencidas</span>
+                    </mat-list-item>
+                    <mat-list-item class="nav-subitem" routerLink="/parcela" [queryParams]="{filter: 'vencendo'}" routerLinkActive="active">
+                    <span matListItemTitle>Vencendo</span>
+                    </mat-list-item>
+                </div>
+                </div>
+            }
 
             <!-- Seção do usuário -->
             <div class="user-section">
@@ -194,6 +235,8 @@
                     <li><a routerLink="/instrutor">Instrutores</a></li>
                     <li><a routerLink="/aluno">Alunos</a></li>
                     <li><a routerLink="/aula">Aulas</a></li>
+                    <li><a routerLink="/pagamento">Pagamentos</a></li>
+                    <li><a routerLink="/parcela">Parcelas</a></li>
                 }
                 </ul>
               </div>

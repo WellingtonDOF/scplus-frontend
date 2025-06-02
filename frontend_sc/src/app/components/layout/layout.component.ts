@@ -34,7 +34,15 @@ export class LayoutComponent implements OnInit{
   
   isHandset = false;
   showHeaderFooter = true; // Será definido no construtor
-  submenuStates: { [key: string]: boolean } = {};
+  submenuStates: { [key: string]: boolean } = {
+    'instrutor': false,
+    'aluno': false,
+    'aula': false,
+    'veiculo': false,
+    'matricula': false,
+    'pagamento': false,  // Novo
+    'parcela': false     // Novo
+  };
   
   // VARIÁVEIS PARA CONTROLE DE USUÁRIO E ROLE
   userRole: 'Admin' | 'Instrutor' | 'Aluno' | null = null;
@@ -110,7 +118,6 @@ export class LayoutComponent implements OnInit{
   }
 
   logout() {
-
     console.log('Usuário deslogado');
     this.authService.logout();
   }
@@ -186,6 +193,29 @@ export class LayoutComponent implements OnInit{
       subItems: [
         { title: 'Listar Matrículas', route: '/matricula' },
         { title: 'Cadastrar Matrícula', route: '/matricula/cadastrar' }
+      ]
+    },
+    {
+      title: 'Pagamentos',
+      icon: 'payment',
+      expanded: false,
+      route: '/pagamento',
+      subItems: [
+        { title: 'Listar Pagamentos', route: '/pagamento' },
+        { title: 'Novo Pagamento', route: '/cadastro-pagamento' },
+        { title: 'Pagamentos Vencidos', route: '/pagamento', queryParams: { filter: 'vencidos' } }
+      ]
+    },
+    {
+      title: 'Parcelas',
+      icon: 'receipt',
+      expanded: false,
+      route: '/parcela',
+      subItems: [
+        { title: 'Listar Parcelas', route: '/parcela' },
+        { title: 'Parcelas Vencidas', route: '/parcela', queryParams: { filter: 'vencidas' } },
+        { title: 'Vencendo em 7 dias', route: '/parcela', queryParams: { filter: 'vencendo', dias: '7' } },
+        { title: 'Vencendo em 30 dias', route: '/parcela', queryParams: { filter: 'vencendo', dias: '30' } }
       ]
     }
   ];
