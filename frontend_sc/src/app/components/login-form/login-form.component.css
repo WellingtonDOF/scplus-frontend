@@ -3,6 +3,7 @@
   width: 100%;
   max-width: 600px; /* AUMENTADO DE 500px PARA 600px */
   padding: 40px 60px; /* AUMENTADO padding lateral de 40px para 60px */
+
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.95);
@@ -159,6 +160,4 @@ mat-error {
 .login-card mat-card-header {
   padding: 0;
 }
-
-
 

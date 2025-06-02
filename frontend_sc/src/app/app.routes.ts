@@ -34,6 +34,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginFormComponent },
     //parte de aluno
     { path: 'aluno', component: HomeComponent,canActivate: [authGuard] },
+
     //parte de aluno e instrutor
     { path : "instrutor", component: InstrutorComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
     { path: "cadastro", component: CadastroComponent,canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } }, // Apenas Admin pode cadastrar
@@ -66,3 +67,4 @@ export const routes: Routes = [
     // Redirecionamento padrão caso não ache
     { path: '**', redirectTo: 'login' } 
 ];
+

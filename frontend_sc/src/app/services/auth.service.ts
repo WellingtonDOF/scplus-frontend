@@ -72,15 +72,13 @@ export class AuthService {
   }
 
   logout(): void {
-
     if (this.tokenCheckInterval) {
       clearInterval(this.tokenCheckInterval);
     }
     
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
-    this.currentUserSubject.next(null);
-    
+    this.currentUserSubject.next(null);    
     this.router.navigate(['/']);
   }
 
